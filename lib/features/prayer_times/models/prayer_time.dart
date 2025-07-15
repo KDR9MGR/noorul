@@ -13,9 +13,9 @@ class PrayerTime {
     switch (prayerName.toLowerCase()) {
       case 'fajr':
         return '🌅';
-      case 'zohar':
+      case 'dhuhr':
         return '☀️';
-      case 'asar':
+      case 'asr':
         return '🌤️';
       case 'maghrib':
         return '🌅';
@@ -25,4 +25,4 @@ class PrayerTime {
         return '⏰';
     }
   }
-} 
+}

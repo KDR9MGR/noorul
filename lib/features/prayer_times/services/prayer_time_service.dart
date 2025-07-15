@@ -44,7 +44,7 @@ class PrayerTimeService {
         final dateTime = DateFormat('yyyy-MM-dd h:mm a').parse(dateTimeStr);
         prayerDateTimes[name] = dateTime;
       } catch (e) {
-        print('Error parsing time for $name: $e');
+        // Error parsing time for prayer, skipping
       }
     });
 
@@ -63,4 +63,26 @@ class PrayerTimeService {
 
     return nextPrayerName.isNotEmpty ? nextPrayerName : 'Fajr';
   }
-} 
+
+  static DateTime? getNextPrayerTime(Map<String, String> prayerTimes) {
+    final now = DateTime.now();
+    final todayStr = DateFormat('yyyy-MM-dd').format(now);
+    DateTime? nextTime;
+    prayerTimes.forEach((name, time) {
+      try {
+        final dateTimeStr = '$todayStr $time';
+        final dateTime = DateFormat('yyyy-MM-dd h:mm a').parse(dateTimeStr);
+        if (dateTime.isAfter(now)) {
+          if (nextTime == null || dateTime.isBefore(nextTime!)) {
+            nextTime = dateTime;
+          }
+        }
+      } catch (_) {}
+    });
+    return nextTime;
+  }
+
+  /// Usage:
+  ///   final nextPrayerTime = PrayerTimeService.getNextPrayerTime(prayerTimes);
+  ///   final duration = nextPrayerTime?.difference(DateTime.now());
+}
